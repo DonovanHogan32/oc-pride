@@ -161,7 +161,9 @@ details.faq summary{cursor:pointer;font-weight:800;color:var(--navy);font-size:1
 <p style="font-size:20px">📞 <a href="tel:7145497663">714-549-7663</a> · ✉️ <a href="mailto:mooremgt@yahoo.com">mooremgt@yahoo.com</a></p>
 <p>Fountain Valley, CA · Director: Mike Moore</p>
 <p>Instagram: <a href="https://www.instagram.com/michaelmoore9777/" target="_blank" rel="noopener" style="color:inherit;font-weight:700">@michaelmoore9777</a> · Facebook: <span class="ph">[Add Facebook]</span> · <a href="https://www.linkedin.com/in/mike-moore-282058b">LinkedIn</a></p></div></section>
-<footer>© 2026 Moore Management / O.C. Pride Basketball · Fountain Valley, CA <button class="cr" onclick="document.getElementById('credits').classList.add('on')">credits</button></footer>
+<footer>© 2026 Moore Management / O.C. Pride Basketball · Fountain Valley, CA <button class="cr" onclick="document.getElementById('credits').classList.add('on')">credits</button>
+<div class="flegal"><a href="#privacy" onclick="openLegal('privacy');return false">Privacy Policy</a> · <a href="#terms" onclick="openLegal('terms');return false">Terms &amp; Disclaimer</a></div>
+<div class="fnote">Results not guaranteed. Not affiliated with the NCAA or listed colleges.</div></footer>
 <div id="credits" onclick="if(event.target===this)this.classList.remove('on')"><div class="box"><button class="x" onclick="this.closest('#credits').classList.remove('on')">&times;</button>
 <h3>Credits</h3><p>Website created by <b>Donovan Hogan</b></p><h3 style="font-size:16px;margin-top:16px">Special Thanks</h3>
 <ul><li>Jamison</li><li>Eugene</li><li>David</li><li>Will Watson</li><li>JT Snow</li><li>Eddie</li><li>George</li><li>Jim</li><li>Norris</li>
@@ -185,7 +187,8 @@ details.faq summary{cursor:pointer;font-weight:800;color:var(--navy);font-size:1
 <label class="tl">Email<input required name="Email" type="email"></label>
 <label class="tl">Phone Number<input required name="Phone" type="tel"></label>
 <label class="tl ronly">Anything else? (optional)<textarea name="Notes" rows="2"></textarea></label>
-<button class="btn" type="submit" style="width:100%;margin-top:16px">Submit</button>
+<label class="consent"><input type="checkbox" name="Consent" required><span>By submitting, you agree to our <a href="#privacy" onclick="openLegal('privacy');return false">Privacy Policy</a> and confirm you are 18+ or a parent/guardian has approved this submission.</span></label>
+<button class="btn" type="submit" style="width:100%;margin-top:14px">Submit</button>
 <p id="tryMsg" style="margin:12px 0 0;font-weight:600;text-align:center"></p>
 </form></div>
 <style>.tl{display:block;font-weight:700;font-size:14px;margin-top:12px}.tl input,.tl select,.tl textarea{display:block;width:100%;box-sizing:border-box;margin-top:5px;padding:11px 12px;border:2px solid #8cc6ee;border-radius:10px;font-size:16px;font-family:inherit;color:#05254c;background:#fff}.tl input:focus,.tl select:focus,.tl textarea:focus{outline:none;border-color:#05254c}.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ftabs{display:flex;gap:6px;background:#e6f3fb;padding:5px;border-radius:999px;margin-top:14px}.ftabs button{flex:1;border:0;background:transparent;padding:9px;border-radius:999px;font-weight:700;color:#05254c;cursor:pointer;font-family:inherit;font-size:14px}.ftabs button.on{background:#05254c;color:#fff}#tryForm.m-tryout .ronly,#tryForm.m-recruit .tonly{display:none}</style>
@@ -199,11 +202,79 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeForm();
 document.getElementById('tryForm').addEventListener('submit',async function(e){e.preventDefault();var f=this,m=document.getElementById('tryMsg'),b=f.querySelector('button[type=submit]');b.disabled=true;m.style.color='#05254c';m.textContent='Sending...';
 var kind=fMode==='tryout'?'Tryout Application':'Recruiting Service Inquiry';var keys=fMode==='tryout'?['Name','Age','Grade','High School','Team','Position','Previous Club','Email','Phone']:['Name','Age','Grade','High School','Sport','Grad Year','Email','Phone','Notes'];
 var d=new FormData(),src=new FormData(f),body='New OC Pride '+kind+'\r\n\r\n';keys.forEach(function(k){var v=src.get(k)||'';d.append(k,v);body+=k+': '+v+'\r\n';});
-d.append('_subject','OC Pride '+kind+' - '+(src.get('Name')||''));d.append('_template','table');d.append('_replyto',src.get('Email')||'');d.append('_honey',src.get('_honey')||'');
+d.append('Consent','Agreed to Privacy Policy; 18+ or parent/guardian approved');body+='Consent: Agreed to Privacy Policy; 18+ or parent/guardian approved\r\n';d.append('_subject','OC Pride '+kind+' - '+(src.get('Name')||''));d.append('_template','table');d.append('_replyto',src.get('Email')||'');d.append('_honey',src.get('_honey')||'');
 var mail='mailto:mooremgt@yahoo.com?subject='+encodeURIComponent('OC Pride '+kind+' - '+(src.get('Name')||''))+'&body='+encodeURIComponent(body);
 var ok=false;try{var c=new AbortController();var t=setTimeout(function(){c.abort()},8000);var r=await fetch('https://formsubmit.co/ajax/mooremgt@yahoo.com',{method:'POST',headers:{'Accept':'application/json'},body:d,signal:c.signal});clearTimeout(t);var j=await r.json();ok=r.ok&&String(j.success)==='true';}catch(x){}
 if(ok){f.reset();m.textContent='Thanks! Your info was sent. Coach Moore will be in touch.';}
 else{m.textContent='Opening your email app with your info filled in. Just press Send.';window.location.href=mail;}
 b.disabled=false;});
+</script>
+
+<!-- LEGAL: Privacy Policy + Terms & Disclaimer (opened from footer links) -->
+<div id="legalModal" onclick="if(event.target===this)closeLegal()">
+<div class="lbox">
+<div class="lhead"><div class="ltabs"><button type="button" id="lTabP" onclick="openLegal('privacy')">Privacy Policy</button><button type="button" id="lTabT" onclick="openLegal('terms')">Terms &amp; Disclaimer</button></div><span class="lx" onclick="closeLegal()">&times;</span></div>
+<div id="lPrivacy" class="lsec">
+<h2>Privacy Policy</h2><p class="ldate">Effective date: October 27, 2026</p>
+<p>This website is operated by O.C. Pride Basketball / Moore Management ("OC Pride," "we," "us"), based in Orange County, California. This policy explains, in plain English, what information we collect through this website and how we use it.</p>
+<h3>Information we collect</h3>
+<p>We only collect information you choose to give us through our Tryout Sign-Up or Recruiting Service forms. Depending on the form, this may include: player name, age, grade, high school, team or sport, graduation year, email address, phone number, position, previous club team, and any notes you add.</p>
+<h3>How we use it</h3>
+<p>We use this information only to contact you about tryouts, teams, and our recruiting service. We do not sell, rent, or trade your personal information, and we do not use it for unrelated advertising.</p>
+<h3>How it is sent</h3>
+<p>Form submissions are delivered to our email (mooremgt@yahoo.com) using a third-party form delivery service (FormSubmit). If that service is unavailable, the form may open your own email app so you can send the information yourself. Those services and email providers handle data under their own privacy policies.</p>
+<h3>Minors and parents/guardians</h3>
+<p>Many of our athletes are minors. If a player is under 13, a parent or guardian must fill out and submit the form; we do not knowingly collect information directly from children under 13 without parent/guardian consent (consistent with the Children's Online Privacy Protection Act, COPPA). Athletes under 18 should have a parent or guardian's permission before submitting. If you believe a child's information was sent without consent, email us and we will delete it.</p>
+<h3>Your California privacy rights</h3>
+<p>If you are a California resident, you may ask us what personal information we have about you or your child, ask us to correct it, or ask us to delete it. To make a request, email <a href="mailto:mooremgt@yahoo.com">mooremgt@yahoo.com</a>. We will not treat you differently for making a request.</p>
+<h3>Cookies and analytics</h3>
+<p>This site does not use advertising cookies or tracking pixels. Our web host (GitHub Pages) may keep basic technical logs (such as IP address and browser type) for security and operation of the service.</p>
+<h3>Third-party links</h3>
+<p>This site links to outside platforms such as Instagram and LinkedIn. Those sites are run by other companies and have their own privacy policies; we are not responsible for their practices.</p>
+<h3>How long we keep it</h3>
+<p>We keep form information only as long as needed to respond to you and run our program, and delete it on request.</p>
+<h3>Changes</h3>
+<p>We may update this policy from time to time. The effective date above shows when it was last changed.</p>
+<h3>Contact</h3>
+<p>Questions or requests: <a href="mailto:mooremgt@yahoo.com">mooremgt@yahoo.com</a></p>
+</div>
+<div id="lTerms" class="lsec">
+<h2>Terms of Use &amp; Disclaimer</h2><p class="ldate">Effective date: October 27, 2026</p>
+<p>By using this website, you agree to these terms. If you do not agree, please do not use the site.</p>
+<h3>General information only</h3>
+<p>Everything on this site is provided "as is" for general information. Schedules, teams, locations, and details may change without notice. Contact us to confirm anything important.</p>
+<h3>Results are not guaranteed</h3>
+<p>Statistics, testimonials, college placements, scholarship numbers, and other results shown on this site reflect the past experience of OC Pride / Moore Management and its athletes, as reported by OC Pride / Moore Management. They are not a promise or guarantee of future results. Joining a team or using our recruiting service does not guarantee a scholarship, a roster spot, playing time, college admission, or any recruiting outcome. Every athlete's results depend on their own ability, effort, academics, and many factors outside our control.</p>
+<h3>No affiliation or endorsement</h3>
+<p>OC Pride / Moore Management is an independent program. We are not affiliated with, sponsored by, or endorsed by the NCAA, FieldLevel, or any college or university shown on this site. College names and logos are used only to identify schools where athletes have played, and belong to their respective owners.</p>
+<h3>Sports participation and risk</h3>
+<p>Basketball and other sports involve a risk of injury. Participation in tryouts, practices, games, or events requires separate registration, waivers, and parent/guardian consent for minors. Nothing on this website replaces those documents.</p>
+<h3>Who is responsible for the content</h3>
+<p>All content, information, statistics, testimonials, and claims on this website are provided by and are the sole responsibility of OC Pride / Moore Management. The website designer/developer built this site as a technical service only, did not supply or verify the business's claims, and is not responsible for the accuracy of that content or for the operation of the program or its services.</p>
+<h3>Limitation of liability</h3>
+<p>To the fullest extent allowed by law, OC Pride / Moore Management and the website designer/developer are not liable for any indirect, incidental, or consequential damages arising from your use of this website or reliance on its content. Your only remedy if you are unhappy with the site is to stop using it.</p>
+<h3>Outside links</h3>
+<p>Links to other websites are provided for convenience. We do not control and are not responsible for their content.</p>
+<h3>Governing law</h3>
+<p>These terms are governed by the laws of the State of California.</p>
+<h3>Copyright</h3>
+<p>© 2026 OC Pride / Moore Management. All rights reserved. Photos and content may not be copied without permission.</p>
+<h3>Contact</h3>
+<p><a href="mailto:mooremgt@yahoo.com">mooremgt@yahoo.com</a></p>
+</div>
+</div></div>
+<style>.flegal{margin-top:10px;font-size:13px}.flegal a{color:#8cc6ee!important;text-decoration:none;font-weight:600}.flegal a:hover{text-decoration:underline}.fnote{margin-top:6px;font-size:12px;opacity:.8}
+#legalModal{display:none;position:fixed;inset:0;background:rgba(5,37,76,.6);z-index:10001;align-items:center;justify-content:center;padding:16px}#legalModal.on{display:flex}
+#legalModal .lbox{background:#fff;border-radius:16px;border-top:6px solid #05254c;max-width:680px;width:100%;max-height:90vh;overflow:auto;padding:22px 28px 28px;box-shadow:0 20px 50px rgba(0,0,0,.3);color:#05254c;text-align:left;font-size:15px;line-height:1.55}
+#legalModal .lhead{display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:-22px;background:#fff;padding:6px 0 10px;margin-top:-6px}
+#legalModal .ltabs{display:flex;gap:6px;background:#e6f3fb;padding:5px;border-radius:999px;flex:1;max-width:420px}#legalModal .ltabs button{flex:1;border:0;background:transparent;padding:8px;border-radius:999px;font-weight:700;color:#05254c;cursor:pointer;font-family:inherit;font-size:14px}#legalModal .ltabs button.on{background:#05254c;color:#fff}
+#legalModal .lx{cursor:pointer;font-size:28px;line-height:1;color:#05254c}#legalModal h2{margin:12px 0 2px;color:#05254c}#legalModal h3{font-size:16px;margin:16px 0 4px;color:#05254c;border-left:4px solid #64aee3;padding-left:8px}#legalModal p{margin:4px 0;color:#24415f}#legalModal .ldate{color:#64aee3;font-weight:700;font-size:13px}#legalModal a{color:#2b7fc0}
+#legalModal .lsec{display:none}#legalModal.p #lPrivacy,#legalModal.t #lTerms{display:block}
+.consent{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-top:14px;color:#24415f;line-height:1.4;font-weight:500}.consent input{margin-top:2px;width:16px;height:16px;flex:none;accent-color:#05254c}.consent a{color:#2b7fc0;font-weight:700}</style>
+<script>
+function openLegal(w){var m=document.getElementById('legalModal');m.className='on '+(w==='terms'?'t':'p');document.getElementById('lTabP').className=w==='terms'?'':'on';document.getElementById('lTabT').className=w==='terms'?'on':'';m.querySelector('.lbox').scrollTop=0;}
+function closeLegal(){document.getElementById('legalModal').className='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLegal();});
+if(location.hash==='#privacy')openLegal('privacy');else if(location.hash==='#terms')openLegal('terms');
 </script>
 </body></html>
