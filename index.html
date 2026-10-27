@@ -153,9 +153,12 @@ footer{background:var(--navy)!important;color:#cfe6f7!important}.cr{color:#7fa8c
 </form></div>
 <style>.tl{display:block;font-weight:700;font-size:14px;margin-top:12px}.tl input,.tl select{display:block;width:100%;box-sizing:border-box;margin-top:5px;padding:11px 12px;border:2px solid #8cc6ee;border-radius:10px;font-size:16px;font-family:inherit;color:#05254c}.tl input:focus,.tl select:focus{outline:none;border-color:#05254c}</style>
 <script>
-document.getElementById('tryForm').addEventListener('submit',async function(e){e.preventDefault();var m=document.getElementById('tryMsg'),b=this.querySelector('button[type=submit]');b.disabled=true;m.style.color='#05254c';m.textContent='Sending...';
-try{var r=await fetch('https://formsubmit.co/ajax/mooremgt@yahoo.com',{method:'POST',headers:{'Accept':'application/json'},body:new FormData(this)});var j=await r.json();
-if(r.ok&&String(j.success)!=='false'){this.reset();m.textContent='Thanks! Your application was sent. Coach Moore will be in touch.';}else throw 0;}
-catch(x){m.style.color='#b00020';m.textContent='Something went wrong. Please email mooremgt@yahoo.com or call 714-549-7663.';}b.disabled=false;});
+document.getElementById('tryForm').addEventListener('submit',async function(e){e.preventDefault();var f=this,m=document.getElementById('tryMsg'),b=f.querySelector('button[type=submit]');b.disabled=true;m.style.color='#05254c';m.textContent='Sending...';
+var d=new FormData(f),body='New OC Pride Tryout Application%0D%0A%0D%0A';['Name','Age','High School','Team','email','Phone'].forEach(function(k){body+=encodeURIComponent((k=='email'?'Email':k)+': '+(d.get(k)||''))+'%0D%0A';});
+var mail='mailto:mooremgt@yahoo.com?subject='+encodeURIComponent('OC Pride Tryout Application - '+(d.get('Name')||''))+'&body='+body;
+var ok=false;try{var c=new AbortController();var t=setTimeout(function(){c.abort()},8000);var r=await fetch('https://formsubmit.co/ajax/mooremgt@yahoo.com',{method:'POST',headers:{'Accept':'application/json'},body:d,signal:c.signal});clearTimeout(t);var j=await r.json();ok=r.ok&&String(j.success)==='true';}catch(x){}
+if(ok){f.reset();m.textContent='Thanks! Your application was sent. Coach Moore will be in touch.';}
+else{m.textContent='Opening your email app to send your application to Coach Moore. Just press Send.';window.location.href=mail;}
+b.disabled=false;});
 </script>
 </body></html>
