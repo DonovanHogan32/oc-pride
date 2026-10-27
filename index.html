@@ -101,7 +101,7 @@ footer{background:var(--navy)!important;color:#cfe6f7!important}.cr{color:#7fa8c
 <div class="card e"><h3>17U Elite</h3><p>Our top travel team, competing at top tournaments for college exposure.</p></div>
 </div>
 <div id="tryouts" class="card e" style="margin-top:36px;text-align:center"><h2>Tryouts</h2><p>Tryout dates: <span class="ph">[Add tryout dates]</span>. Tell us your player's name, age/grade, and the team you're interested in.</p>
-<a class="btn" href="mailto:mooremgt@yahoo.com?subject=OC%20Pride%20Tryout%20Interest&body=Player%20name%3A%0AAge%2FGrade%3A%0ATeam%20interest%3A%0AParent%20phone%3A">Sign Up for Tryouts</a></div></div></section>
+<button class="btn" type="button" onclick="document.getElementById('tryModal').style.display='flex'">Sign Up for Tryouts</button></div></div></section>
 
 <section id="practice"><div class="wrap two"><div><span class="tag">Practice</span><h2>MAP Sports Facility</h2>
 <p style="font-size:22px"><b>Monday &amp; Wednesday nights · 6:00 PM</b></p>
@@ -136,4 +136,27 @@ footer{background:var(--navy)!important;color:#cfe6f7!important}.cr{color:#7fa8c
 <!-- ADD MORE NAMES HERE: copy the line below, remove the comment markers, replace the name -->
 <!-- <li>New Name</li> -->
 </ul></div></div>
+
+<div id="tryModal" style="display:none;position:fixed;inset:0;background:rgba(5,37,76,.6);z-index:9999;align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)this.style.display='none'">
+<form id="tryForm" style="background:#fff;border-radius:16px;border-top:6px solid #05254c;max-width:440px;width:100%;padding:28px;box-shadow:0 20px 50px rgba(0,0,0,.3);text-align:left;color:#05254c;max-height:92vh;overflow:auto">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Tryout Sign-Up</h2><span style="cursor:pointer;font-size:26px" onclick="document.getElementById('tryModal').style.display='none'">&times;</span></div>
+<input type="hidden" name="_subject" value="New OC Pride Tryout Application">
+<input type="hidden" name="_template" value="table">
+<input type="text" name="_honey" style="display:none">
+<label class="tl">Player Name<input required name="Name"></label>
+<label class="tl">Age<input required name="Age" type="number" min="5" max="19"></label>
+<label class="tl">High School<input required name="High School"></label>
+<label class="tl">Team<select required name="Team"><option value="">Select a team</option><option>11/12U</option><option>13/14U</option><option>15U</option><option>16U</option><option>17U Elite</option></select></label>
+<label class="tl">Email<input required name="email" type="email"></label>
+<label class="tl">Phone Number<input required name="Phone" type="tel"></label>
+<button class="btn" type="submit" style="width:100%;margin-top:14px">Submit Application</button>
+<p id="tryMsg" style="margin:12px 0 0;font-weight:600;text-align:center"></p>
+</form></div>
+<style>.tl{display:block;font-weight:700;font-size:14px;margin-top:12px}.tl input,.tl select{display:block;width:100%;box-sizing:border-box;margin-top:5px;padding:11px 12px;border:2px solid #8cc6ee;border-radius:10px;font-size:16px;font-family:inherit;color:#05254c}.tl input:focus,.tl select:focus{outline:none;border-color:#05254c}</style>
+<script>
+document.getElementById('tryForm').addEventListener('submit',async function(e){e.preventDefault();var m=document.getElementById('tryMsg'),b=this.querySelector('button[type=submit]');b.disabled=true;m.style.color='#05254c';m.textContent='Sending...';
+try{var r=await fetch('https://formsubmit.co/ajax/mooremgt@yahoo.com',{method:'POST',headers:{'Accept':'application/json'},body:new FormData(this)});var j=await r.json();
+if(r.ok&&String(j.success)!=='false'){this.reset();m.textContent='Thanks! Your application was sent. Coach Moore will be in touch.';}else throw 0;}
+catch(x){m.style.color='#b00020';m.textContent='Something went wrong. Please email mooremgt@yahoo.com or call 714-549-7663.';}b.disabled=false;});
+</script>
 </body></html>
